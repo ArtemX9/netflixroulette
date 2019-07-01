@@ -1,0 +1,49 @@
+[{
+  "title": "Kill Bill Vol.1",
+  "year": 2003,
+  "description": "Pulp Fiction is a 1994 American crime film written and directed by Quentin Tarantino, who conceived it with Roger Avary.[4] Starring John Travolta, Samuel L. Jackson, Bruce Willis, Tim Roth, Ving Rhames, and Uma Thurman, it tells several stories of criminal Los Angeles. The film's title refers to the pulp magazines and hardboiled crime novels popular during the mid-20th century, known for their graphic violence and punchy dialogue.",
+  "imageSrc": "Kill-Bill-V1.png",
+  "rating": 4.3,
+  "length": 150,
+  "genre": "Action & Adventure"
+}, {
+  "title": "Kill Bill Vol.2",
+  "year": 2004,
+  "description": "Pulp Fiction is a 1994 American crime film written and directed by Quentin Tarantino, who conceived it with Roger Avary.[4] Starring John Travolta, Samuel L. Jackson, Bruce Willis, Tim Roth, Ving Rhames, and Uma Thurman, it tells several stories of criminal Los Angeles. The film's title refers to the pulp magazines and hardboiled crime novels popular during the mid-20th century, known for their graphic violence and punchy dialogue.",
+  "imageSrc": "Kill-Bill-V2.png",
+  "rating": 4.3,
+  "length": 150,
+  "genre": "Action & Adventure"
+}, {
+  "title": "Four Rooms",
+  "year": 2003,
+  "description": "",
+  "imageSrc": "Four-Rooms.png",
+  "rating": 4.3,
+  "length": 150,
+  "genre": "Action & Adventure"
+}, {
+  "title": "Reservoir dogs",
+  "year": 2003,
+  "description": "",
+  "imageSrc": "Reservoir-dogs.png",
+  "rating": 4.3,
+  "length": 150,
+  "genre": "Oscar winning Movie"
+}, {
+  "title": "Jackie Brown",
+  "year": 2003,
+  "description": "",
+  "imageSrc": "Jackie-Brown.png",
+  "rating": 4.3,
+  "length": 150,
+  "genre": "Action & Adventure"
+}, {
+  "title": "Pulp Fiction",
+  "year": 1994,
+  "description": "",
+  "imageSrc": "Pulp-Fiction.png",
+  "rating": 4.3,
+  "length": 120,
+  "genre": "Oscar winning Movie"
+}]
