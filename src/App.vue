@@ -1,24 +1,32 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    4.3
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
 export default {
   name: 'app',
-  components: {
-    HelloWorld
-  }
 }
 </script>
 
 <style>
+  @font-face {
+    font-family: 'Trueno Light';
+    src: url("./assets/fonts/TruenoLt.otf") format("opentype");
+  }
+  @font-face {
+    font-family: 'Trueno Ultra Light';
+    src: url("./assets/fonts/TruenoUltLt.otf") format("opentype");
+  }
+  @font-face {
+    font-family: 'Trueno Bold';
+    font-weight: bold;
+    src: url("./assets/fonts/TruenoBd.otf") format("opentype");
+  }
+
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: 'Trueno Light', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
