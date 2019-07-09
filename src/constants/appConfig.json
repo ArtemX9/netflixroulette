@@ -1,0 +1,19 @@
+{
+  "sortByOptions": [{
+    "id": "release_date",
+    "title": "release date",
+    "isDefault": true
+  },
+    {
+      "id": "rating",
+      "title": "rating"
+    }],
+  "searchByOptions": [{
+    "id": "title",
+    "title": "title",
+    "isDefault": true
+  }, {
+    "id": "genre",
+    "title": "genre"
+  }]
+}

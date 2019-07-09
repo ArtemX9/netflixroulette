@@ -1,36 +1,34 @@
 <template>
-    <span class="movie-detail-info">
-        <span class="amount"> {{ amount }} </span> <span class="measure">{{ measure }}</span>
-    </span>
+  <span class="movie-detail-info">
+    <span class="amount"> {{ amount }} </span>
+    <span class="measure">{{ measure }}</span>
+  </span>
 </template>
 
 <script>
-  export default {
-    props: {
-      amount: {
-        type: Number,
-        required: true
-      },
-      measure: {
-        type: String,
-        required: true
-      }
+export default {
+  name: "MovieDetailInfo",
+  props: {
+    amount: {
+      type: Number,
+      required: true
     },
-    name: "MovieDetailInfo"
+    measure: {
+      type: String,
+      required: true
+    }
   }
+};
 </script>
 
 <style scoped>
-    .movie-detail-info {
-        font-family: 'Trueno Light';
-    }
-    .amount {
-        font-size: 30px;
-        color: #f75160;
-    }
+.amount {
+  font-size: 30px;
+  color: #f75160;
+}
 
-    .measure {
-        font-family: 'Trueno Ultra Light';
-        color: gray;
-    }
+.measure {
+  font-family: "Trueno Ultra Light";
+  color: gray;
+}
 </style>
