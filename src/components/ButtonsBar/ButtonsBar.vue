@@ -2,9 +2,9 @@
   <ul v-if="buttons.length" v-on:click="handleClick" class="buttons-bar">
     <li
       v-for="button in buttons"
-      v-bind:key="button.id"
-      v-bind:data-id="button.id"
-      v-bind:class="{ selected: button.id === selectedId }"
+      :key="button.id"
+      :data-id="button.id"
+      :class="{ selected: isSelected(button.id) }"
     >
       {{ button.title | capitalize }}
     </li>
@@ -19,18 +19,16 @@ export default {
       type: Array,
       required: true
     },
-    onButtonClick: {
-      type: Function,
-      required: true
-    },
     selectedId: {
-      type: String,
-
+      type: String
     }
   },
   methods: {
     handleClick: function({ target }) {
-      this.onButtonClick(target.dataset.id);
+      this.$emit("buttonClick", target.dataset.id);
+    },
+    isSelected: function(id) {
+      return id === this.selectedId;
     }
   },
   filters: {
@@ -42,13 +40,12 @@ export default {
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .buttons-bar {
   display: inline-block;
   margin: 0;
   padding: 0;
-  font-family: 'Trueno Ultra Light', Helvetica, Arial, sans-serif;
+  font-family: "Trueno Ultra Light", Helvetica, Arial, sans-serif;
 }
 .buttons-bar li {
   display: inline-block;
