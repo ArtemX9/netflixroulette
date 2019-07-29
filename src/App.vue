@@ -1,17 +1,17 @@
 <template>
   <div id="app">
     <MoviePage
-        v-if="isAnyMovieSelected"
-        :selectedMovie="selectedMovie"
-        :movies="movies"
-        v-on:movieSelection="handleMovieSelection"
+      v-if="isAnyMovieSelected"
+      :selectedMovie="selectedMovie"
+      :movies="movies"
+      v-on:movieSelection="handleMovieSelection"
     ></MoviePage>
     <SearchPage
       v-else
       :searchOptions="searchByOptions"
-      :searchById="searchById"
+      :searchById="searchByType"
       :sortByOptions="sortByOptions"
-      :sortById="sortById"
+      :sortById="sortByType"
       :movies="movies"
       v-on:sortChange="handleSortChange"
       v-on:searchChange="handleSearchChange"
@@ -22,56 +22,47 @@
 </template>
 
 <script>
+import { mapGetters, mapMutations, mapState } from "vuex";
 import MoviePage from "./components/MoviePage/MoviePage";
 import SearchPage from "./components/SearchPage/SearchPage";
-import movies from "./constants/movies";
 import { searchByOptions, sortByOptions } from "./constants/appConfig";
-
-const getDefaultOption = option => option.isDefault;
-const mapSortId = {
-  release_date: 'year',
-  rating: 'rating'
-};
 
 export default {
   name: "app",
   components: { MoviePage, SearchPage },
   data: () => ({
-    movies,
     searchByOptions,
-    sortByOptions,
-    selectedMovie: null,
-    searchById: searchByOptions.find(getDefaultOption).id,
-    sortById: sortByOptions.find(getDefaultOption).id
+    sortByOptions
   }),
   computed: {
-      isAnyMovieSelected: function() {
-          return this.selectedMovie !== null;
-      }
+    ...mapGetters(["selectedMovie"]),
+    ...mapState({
+      isAnyMovieSelected() {
+        return !!this.selectedMovie;
+      },
+      movies: state => state.movies,
+      searchByType: state => state.searchByType,
+      sortByType: state => state.sortByType
+    })
   },
   methods: {
-    handleSortChange(sortById) {
-      this.sortById = sortById;
+    ...mapMutations([
+      "changeSortType",
+      "changeSearchType",
+      "searchMovies",
+      "selectMovie"
+    ]),
+    handleSortChange(sortType) {
+      this.changeSortType({ sortType });
     },
-    handleSearchChange(searchById) {
-      this.searchById = searchById;
+    handleSearchChange(searchType) {
+      this.changeSearchType({ searchType });
     },
-    handleMovieSelection(movieTitle) {
-      const movie = movies.find(movie => movie.title === movieTitle);
-      this.selectedMovie = movie;
+    handleMovieSelection(movieId) {
+      this.selectMovie({ movieId });
     },
     handleSearchClick(searchQuery) {
-      const searchById = this.searchById;
-      const normalizedQuery = searchQuery.trim().toLowerCase();
-      if (!normalizedQuery.length) {
-        this.movies = movies;
-      } else {
-        this.movies = movies.filter(movie => {
-          const a = movie[searchById].toLowerCase();
-          return a.includes(searchQuery);
-        });
-        this.movies.sort((arg1, arg2) => arg1[mapSortId[this.sortById]] - arg2[mapSortId[this.sortById]]);
-      }
+      this.searchMovies({ searchQuery });
     }
   }
 };

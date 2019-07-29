@@ -2,11 +2,12 @@
   <div class="movies" v-if="movies.length > 0">
     <MovieTile
       v-for="movie in movies"
-      :key="movie.title"
+      :key="movie.id"
+      :id="movie.id"
       :title="movie.title"
-      :imageSrc="movie.imageSrc"
-      :genre="movie.genre"
-      :year="movie.year"
+      :imageSrc="movie.poster_path"
+      :genres="movie.genres"
+      :year="movie.release_date | yearFromDate"
       v-on:movieSelection="handleMovieSelection"
     />
   </div>
@@ -15,16 +16,18 @@
 
 <script>
 import MovieTile from "../MovieTile/MovieTile";
+import { yearFromDate } from "../../filters/yearFromDate";
 
 export default {
-  components: { MovieTile },
   name: "Movies",
+  components: { MovieTile },
+  mixins: [yearFromDate],
   props: {
     movies: Array
   },
   methods: {
-    handleMovieSelection(title) {
-      this.$emit("movieSelection", title);
+    handleMovieSelection(id) {
+      this.$emit("movieSelection", id);
     }
   }
 };

@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ButtonsBar renders correctly 1`] = `
+<ul
+  class="buttons-bar"
+>
+  <li
+    class=""
+    data-id="some1"
+  >
+
+    SOME1
+
+  </li>
+  <li
+    class="selected"
+    data-id="some2"
+  >
+
+    SOME2
+
+  </li>
+</ul>
+`;

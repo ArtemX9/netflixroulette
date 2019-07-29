@@ -31,8 +31,8 @@ export default {
     selectedMovie: Object
   },
   methods: {
-    handleMovieSelection(title) {
-        this.$emit('movieSelection', title)
+    handleMovieSelection(id) {
+        this.$emit('movieSelection', id)
     }
   }
 };
