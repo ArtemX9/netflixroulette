@@ -2,7 +2,7 @@
   <div class="search-header">
     <div class="search-header__search">
       <p class="search-header__search-prompt">Find your movie</p>
-      <Search v-on:searchClick="handleSearchClick" />
+      <Search v-on:searchClick="handleSearchClick" :initialSearchQuery="searchQuery" />
       <div class="search-header__search-by">
         <span class="search-header__search-by-text">Search by</span>
         <ButtonsBar
@@ -22,7 +22,7 @@ import Search from "../Search/Search";
 export default {
   name: "SearchHeader",
   components: { Search, ButtonsBar },
-  props: { searchOptions: Array, searchById: String },
+  props: { searchOptions: Array, searchById: String, searchQuery: String },
   methods: {
     handleSearchChange(searchId) {
       this.$emit("searchChange", searchId);

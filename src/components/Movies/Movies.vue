@@ -8,6 +8,7 @@
       :imageSrc="movie.poster_path"
       :genres="movie.genres"
       :year="movie.release_date | yearFromDate"
+      :parentRef="parentRef"
       v-on:movieSelection="handleMovieSelection"
     />
   </div>
@@ -23,7 +24,8 @@ export default {
   components: { MovieTile },
   mixins: [yearFromDate],
   props: {
-    movies: Array
+    movies: Array,
+    parentRef: HTMLElement
   },
   methods: {
     handleMovieSelection(id) {

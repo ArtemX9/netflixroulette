@@ -4,13 +4,14 @@
       <SearchHeader
         :searchOptions="searchOptions"
         :searchById="searchById"
+        :searchQuery="searchQuery"
         v-on:searchClick="handleSearchClick"
         v-on:searchChange="handleSearchChange"
       />
     </template>
     <template v-slot:main>
       <SearchManager
-        :count="movies.length"
+        :count="total"
         :sortById="sortById"
         :sortOptions="sortByOptions"
         v-on:sortChange="handleSortChange"
@@ -37,7 +38,9 @@ export default {
     searchOptions: Array,
     sortByOptions: Array,
     searchById: String,
-    sortById: String
+    sortById: String,
+    searchQuery: String,
+    total: Number
   },
     methods: {
         handleMovieSelection(title) {
