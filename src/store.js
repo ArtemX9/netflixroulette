@@ -4,13 +4,18 @@ import Vuex from "vuex";
 import { searchByOptions, sortByOptions } from "./constants/appConfig";
 import { getMovie, getMovies } from "./api/movies";
 
-const types = {
+export const types = {
   FETCH_MOVIES_START: "FETCH_MOVIES_START",
   FETCH_MOVIES_SUCCESS: "FETCH_MOVIES_SUCCESS",
   FETCH_MOVIES_ERROR: "FETCH_MOVIES_ERROR",
+
   GET_MOVIE_START: "GET_MOVIE_START",
   GET_MOVIE_SUCCESS: "GET_MOVIE_SUCCESS",
-  GET_MOVIE_ERROR: "GET_MOVIE_ERROR"
+  GET_MOVIE_ERROR: "GET_MOVIE_ERROR",
+
+  UPDATE_SEARCH_QUERY: "UPDATE_SEARCH_QUERY",
+  INCREASE_PAGE_NUMBER: "INCREASE_PAGE_NUMBER",
+  RESET_MOVIES: "RESET_MOVIES"
 };
 
 Vue.use(Vuex);
@@ -30,7 +35,10 @@ export default new Vuex.Store({
     searchByType: searchByOptions.find(getDefaultOption).id,
     sortByType: sortByOptions.find(getDefaultOption).id,
     selectedMovieId: null,
-    total: 0
+    page: 0,
+    offset: 0,
+    total: 0,
+    limit: 30
   },
   mutations: {
     changeSortType(state, { sortType }) {
@@ -39,17 +47,26 @@ export default new Vuex.Store({
     changeSearchType(state, { searchType }) {
       state.searchByType = searchType;
     },
-    updateSearchQuery(state, { searchQuery }) {
+    [types.UPDATE_SEARCH_QUERY](state, { searchQuery }) {
       state.searchQuery = searchQuery;
     },
     selectMovie(state, { movieId }) {
       state.selectedMovieId = movieId;
     },
+    [types.RESET_MOVIES](state) {
+      state.movies = [];
+      state.page = 0;
+      state.offset = 0;
+      state.total = 0;
+    },
+    [types.INCREASE_PAGE_NUMBER](state) {
+      state.page += 1;
+    },
     [types.FETCH_MOVIES_START](state) {
       state.isLoading = true;
     },
     [types.FETCH_MOVIES_SUCCESS](state, { movies, total, offset }) {
-      state.movies = movies;
+      state.movies = [...state.movies, ...movies];
       state.total = total;
       state.offset = offset;
       state.isLoading = false;
@@ -80,7 +97,8 @@ export default new Vuex.Store({
         } = await getMovies(
           state.searchQuery,
           state.searchByType,
-          mapSortId[state.sortByType]
+          mapSortId[state.sortByType],
+          state.limit * state.page,
         );
         commit(types.FETCH_MOVIES_SUCCESS, { movies, total, offset });
       } catch (error) {
@@ -88,6 +106,8 @@ export default new Vuex.Store({
       }
     },
     async selectMovie({ commit, state }, { movieId }) {
+      commit(types.RESET_MOVIES);
+
       commit(types.GET_MOVIE_START, { movieId });
       try {
         const { data: movie } = await getMovie(
@@ -96,6 +116,22 @@ export default new Vuex.Store({
           state.sortByType
         );
         commit(types.GET_MOVIE_SUCCESS, { movie });
+
+        commit(types.FETCH_MOVIES_START);
+
+        try {
+          const {
+            data: { data: movies, total, offset }
+          } = await getMovies(
+            state.selectedMovie.genres[0],
+            'genres',
+            mapSortId[state.sortByType],
+            state.limit * state.page,
+          );
+          commit(types.FETCH_MOVIES_SUCCESS, { movies, total, offset });
+        } catch (error) {
+          commit(types.FETCH_MOVIES_ERROR, { error });
+        }
       } catch (error) {
         commit(types.GET_MOVIE_ERROR, { error });
       }

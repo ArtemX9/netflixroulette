@@ -4,15 +4,16 @@
       <MovieHeader :selectedMovie="selectedMovie" />
     </template>
     <template v-slot:search-link>
-      <a class="movie-page__search-link" href="/">SEARCH</a>
+      <router-link to="/" class="movie-page__search-link">SEARCH</router-link>
     </template>
     <template v-slot:main>
       <p class="movie-page__same-genre">
-        Films by {{ selectedMovie.genre }} genre
+        Films by {{ mainMovieGenre }} genre
       </p>
       <Movies
         :movies="movies"
         :parentRef="parentRef"
+        v-on:loadNewPage="handleLoadNewPage"
         v-on:movieSelection="handleMovieSelection"
       />
     </template>
@@ -20,21 +21,49 @@
 </template>
 
 <script>
+import { mapActions, mapMutations, mapState } from "vuex";
 import MovieHeader from "../MovieHeader/MovieHeader";
 import Movies from "../Movies/Movies";
 import PageTemplate from "../PageTemplate/PageTemplate";
+import { types } from "../../store";
 
 export default {
   name: "MoviePage",
   components: { PageTemplate, Movies, MovieHeader },
-  props: {
-    movies: Array,
-    selectedMovie: Object,
-    parentRef: Element
+  computed: {
+    ...mapState({
+      isAnyMovieSelected(state) {
+        return !!state.selectedMovie;
+      },
+      movies: state => state.movies,
+      selectedMovie: state => state.selectedMovie,
+      isLoading: state => state.isLoading,
+      mainMovieGenre: state => state.selectedMovie && state.selectedMovie.genres[0]
+    }),
+    movieId() {
+      return this.$route.params.id;
+    },
+    parentRef() {
+      return this.$parent.$refs.app;
+    }
+  },
+  created() {
+    this.selectMovie({ movieId: this.movieId });
   },
   methods: {
+    ...mapActions(["selectMovie", "fetchMovies", "loadNewPage"]),
+    ...mapMutations([types.INCREASE_PAGE_NUMBER]),
     handleMovieSelection(id) {
-        this.$emit('movieSelection', id)
+      this.$router.push({ path: `/movie/${id}` });
+    },
+    handleLoadNewPage() {
+      this[types.INCREASE_PAGE_NUMBER]();
+      this.fetchMovies();
+    }
+  },
+  watch: {
+    $route(to) {
+      this.selectMovie({ movieId: to.params.id });
     }
   }
 };

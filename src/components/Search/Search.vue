@@ -8,6 +8,8 @@
 </template>
 
 <script>
+import {types} from "../../store";
+
 export default {
   name: "Search",
   props: {
@@ -19,7 +21,7 @@ export default {
         return this.initialSearchQuery;
       },
       set(searchQuery) {
-        this.$store.commit("updateSearchQuery", { searchQuery });
+        this.$store.commit(types.UPDATE_SEARCH_QUERY, { searchQuery });
       }
     }
   },
