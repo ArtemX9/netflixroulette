@@ -12,6 +12,7 @@
       </p>
       <Movies
         :movies="movies"
+        :parentRef="parentRef"
         v-on:movieSelection="handleMovieSelection"
       />
     </template>
@@ -28,7 +29,8 @@ export default {
   components: { PageTemplate, Movies, MovieHeader },
   props: {
     movies: Array,
-    selectedMovie: Object
+    selectedMovie: Object,
+    parentRef: Element
   },
   methods: {
     handleMovieSelection(id) {

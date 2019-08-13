@@ -1,18 +1,21 @@
 <template>
-  <div id="app">
+  <div id="app" v-if="!isLoading" ref="app">
     <MoviePage
       v-if="isAnyMovieSelected"
       :selectedMovie="selectedMovie"
       :movies="movies"
+      :parentRef="$refs.app"
       v-on:movieSelection="handleMovieSelection"
     ></MoviePage>
     <SearchPage
       v-else
       :searchOptions="searchByOptions"
+      :searchQuery="searchQuery"
       :searchById="searchByType"
       :sortByOptions="sortByOptions"
       :sortById="sortByType"
       :movies="movies"
+      :total="total"
       v-on:sortChange="handleSortChange"
       v-on:searchChange="handleSearchChange"
       v-on:movieSelection="handleMovieSelection"
@@ -22,7 +25,7 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations, mapState } from "vuex";
+import { mapActions, mapMutations, mapState } from "vuex";
 import MoviePage from "./components/MoviePage/MoviePage";
 import SearchPage from "./components/SearchPage/SearchPage";
 import { searchByOptions, sortByOptions } from "./constants/appConfig";
@@ -34,24 +37,29 @@ export default {
     searchByOptions,
     sortByOptions
   }),
+  created() {
+    this.fetchMovies();
+  },
   computed: {
-    ...mapGetters(["selectedMovie"]),
     ...mapState({
-      isAnyMovieSelected() {
-        return !!this.selectedMovie;
+      isAnyMovieSelected(state) {
+        return !!state.selectedMovie;
       },
       movies: state => state.movies,
+      selectedMovie: state => state.selectedMovie,
+      searchQuery: state => state.searchQuery,
       searchByType: state => state.searchByType,
-      sortByType: state => state.sortByType
+      sortByType: state => state.sortByType,
+      total: state => state.total,
+      isLoading: state => state.isLoading
     })
   },
   methods: {
     ...mapMutations([
       "changeSortType",
-      "changeSearchType",
-      "searchMovies",
-      "selectMovie"
+      "changeSearchType"
     ]),
+    ...mapActions(["fetchMovies", "selectMovie"]),
     handleSortChange(sortType) {
       this.changeSortType({ sortType });
     },
@@ -62,7 +70,7 @@ export default {
       this.selectMovie({ movieId });
     },
     handleSearchClick(searchQuery) {
-      this.searchMovies({ searchQuery });
+      this.fetchMovies({ searchQuery });
     }
   }
 };
@@ -93,6 +101,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   height: 100vh;
+  overflow: scroll;
   color: #2c3e50;
 }
 </style>

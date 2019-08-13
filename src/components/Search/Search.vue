@@ -1,19 +1,31 @@
 <template>
   <div class="search">
     <input v-model="searchQuery" class="search__input" />
-    <button class="search__button" v-on:click="handleSearchClick">SEARCH</button>
+    <button class="search__button" v-on:click="handleSearchClick">
+      SEARCH
+    </button>
   </div>
 </template>
 
 <script>
 export default {
   name: "Search",
-  data: () => ({
-    searchQuery: ""
-  }),
+  props: {
+    initialSearchQuery: String
+  },
+  computed: {
+    searchQuery: {
+      get() {
+        return this.initialSearchQuery;
+      },
+      set(searchQuery) {
+        this.$store.commit("updateSearchQuery", { searchQuery });
+      }
+    }
+  },
   methods: {
     handleSearchClick() {
-      this.$emit("searchClick", this.searchQuery);
+      this.$emit("searchClick");
     }
   }
 };
