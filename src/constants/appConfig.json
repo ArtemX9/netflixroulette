@@ -13,7 +13,7 @@
     "title": "title",
     "isDefault": true
   }, {
-    "id": "genre",
-    "title": "genre"
+    "id": "genres",
+    "title": "genres"
   }]
 }

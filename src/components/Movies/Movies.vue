@@ -11,6 +11,7 @@
       :parentRef="parentRef"
       v-on:movieSelection="handleMovieSelection"
     />
+    <div v-IntersectionDirective="parentRef" @intersects="intersects"></div>
   </div>
   <div v-else class="no-movies"><span>No movies found</span></div>
 </template>
@@ -18,11 +19,13 @@
 <script>
 import MovieTile from "../MovieTile/MovieTile";
 import { yearFromDate } from "../../filters/yearFromDate";
+import {IntersectionDirective} from "../../directives/intersection";
 
 export default {
   name: "Movies",
   components: { MovieTile },
   mixins: [yearFromDate],
+  directives: { IntersectionDirective },
   props: {
     movies: Array,
     parentRef: HTMLElement
@@ -30,6 +33,9 @@ export default {
   methods: {
     handleMovieSelection(id) {
       this.$emit("movieSelection", id);
+    },
+    intersects() {
+      this.$emit("loadNewPage");
     }
   }
 };
